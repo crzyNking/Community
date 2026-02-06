@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teambangan | Community Help</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo" onclick="scrollToSection('home')">Team<span>bangan</span></a>
+                
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" onclick="scrollToSection('home'); return false;">Home</a></li>
+                    <li><a href="#" onclick="scrollToSection('Cboard'); return false;">Community Board</a></li>
+                    <li><a href="#" onclick="scrollToSection('about'); return false;">About</a></li>
+                    <li><a href="#" onclick="scrollToSection('contact'); return false;">Contact</a></li>
+                    <li><a href="#" id="loginLink">Login</a></li>
+                    <li><a href="#" id="logoutLink" style="display: none;">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="page">
+            <div class="container">
+                <div class="hero">
+                    <h1>Teambangan: People Helping People</h1>
+                    <p>Connect with your community to give and receive help. From borrowing tools to finding assistance, build stronger relationships together.</p>
+                    
+                    <div class="cta-buttons">
+                        <button class="btn btn-accent" onclick="scrollToSection('Cboard')">
+                            Browse Community Board
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3>Give Help</h3>
+                        <p>Offer your skills, tools, or time to people in need.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-hands"></i>
+                        </div>
+                        <h3>Get Help</h3>
+                        <p>Request assistance with tasks, errands, or projects.</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Build Community</h3>
+                        <p>Connect with people and build meaningful relationships.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="Cboard" class="page">
+            <div class="container">
+                <div class="page-title">
+                    <h2>Community Board</h2>
+                    <p>Help or get help from community members</p>
+                </div>
+                
+                <div class="note">
+                    <strong>Important:</strong> Please use your real Gmail address when posting. This allows people to contact you directly through email. Don't be stupid - fake emails won't help anyone!
+                </div>
+                
+                <div class="board-controls">
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="all">All Posts</button>
+                        <button class="filter-btn" data-filter="help">Help Requests</button>
+                        <button class="filter-btn" data-filter="offer">Offers</button>
+                    </div>
+                    <button class="btn" id="addPostBtn">
+                        <i class="fas fa-plus"></i> Create New Post
+                    </button>
+                </div>
+                
+                <div class="posts" id="postsContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No posts yet</h3>
+                        <p>Be the first to post in the community!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="loginSection" class="page" style="display: none;">
+            <div class="container">
+                <div class="page-title">
+                    <h2>Login</h2>
+                    <p>Access your community board</p>
+                </div>
+                
+                <div class="auth-section">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" class="form-control" placeholder="Enter your Gmail address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-block">Sign In</button>
+                    </form>
+                    
+                    <div class="switch-link">
+                        <p>Don't have an account? <a href="#" onclick="showSignupSection()">Sign up</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="signupSection" class="page" style="display: none;">
+            <div class="container">
+                <div class="page-title">
+                    <h2>Join Teambangan</h2>
+                    <p>Become part of your community</p>
+                </div>
+                
+                <div class="auth-section">
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <input type="text" id="signupName" class="form-control" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupEmail">Gmail Address</label>
+                            <input type="email" id="signupEmail" class="form-control" placeholder="Enter your real Gmail address" required>
+                            <small style="color: #666; display: block; margin-top: 5px;">Use your real Gmail so people can contact you</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" class="form-control" placeholder="Create a password" required>
+                        </div>
+                        <button type="submit" class="btn btn-accent btn-block">Create Account</button>
+                    </form>
+                    
+                    <div class="switch-link">
+                        <p>Already have an account? <a href="#" onclick="showLoginSection()">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page">
+            <div class="container">
+                <div class="page-title">
+                    <h2>About Teambangan</h2>
+                    <p>Building stronger communities together</p>
+                </div>
+                
+                <div class="about-content">
+                    <h3>Why Teambangan?</h3>
+                    <p>Unlike other platforms, Teambangan focuses specifically on hyper-local community building. We believe that the strongest communities are built on real, face-to-face interactions and mutual support. Our platform makes it safe and easy to:</p>
+                    
+                    <ul style="padding-left: 1.5rem; margin: 1rem 0;">
+                        <li style="margin-bottom: 0.5rem;">Connect with verified people in your area</li>
+                        <li style="margin-bottom: 0.5rem;">Request help with daily tasks and emergencies</li>
+                        <li style="margin-bottom: 0.5rem;">Offer your skills and resources to those in need</li>
+                        <li style="margin-bottom: 0.5rem;">Build trust through transparent interactions</li>
+                        <li>Create lasting friendships within your community</li>
+                    </ul>
+                    
+                    <h3>Our Team</h3>
+                    <p>We're a passionate group of community builders, designers, and developers who believe in the power of local connections.</p>
+                    
+                    <div class="team-members">
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="https://scontent.fceb6-1.fna.fbcdn.net/v/t39.30808-6/505987503_727468193139007_9146853978174241842_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGlbmv13Y6-bhv9GqBHTzOtHTcnTnthoU8dNydOe2GhTw77MlXgp-A9OdpB9HNxOSzMfhf6LKwOuk5JiNUfS3fA&_nc_ohc=3_4SIs7oDh4Q7kNvwFRs9dH&_nc_oc=AdkXmWCiEpn_OkrmLG-7CSu2oDMoI_Wu8DUoab2_a8AF2Y9dB0jyJVnGQqRgWuQm6Lc&_nc_zt=23&_nc_ht=scontent.fceb6-1.fna&_nc_gid=2aoZ8gIuWDSvAoq7Znswqg&oh=00_AfsQGsrq5QIinV5quJGZpA-o4ok11rT4PsRHxxXRyv7qpg&oe=698A387B" alt="Alex Johnson">
+                            </div>
+                            <h4>Ceejay David</h4>
+                            <p>Html</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="https://scontent.fceb2-2.fna.fbcdn.net/v/t39.30808-6/484915017_2186807861752053_708596750238825821_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeF2gz-Q_mw1KTKhETS_MZo9AHa0CDLZFNUAdrQIMtkU1RmIv3N9TfhR9BVAFUT5dQ8emXTNKrfjHDbHQNCCm-7S&_nc_ohc=oPoG7yKHDAQQ7kNvwEU5Xql&_nc_oc=Adn2mfgcI-tS61VfuM89LbMmEEPvFUA_ZYvZ7mL5FHr_xl2LThcHCJN_aKTgsRTbKdM&_nc_zt=23&_nc_ht=scontent.fceb2-2.fna&_nc_gid=Y02ARFf-D5SMBcWN13MDbg&oh=00_AfsOp2iH7uZxy1nhLYu9FJikzaa_fIm7kPWdMek5Iw0jow&oe=698A3E00" alt="Maria Santos">
+                            </div>
+                            <h4>Kenneth Bryan Fajardo Peras </h4>
+                            <p>CSS</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="https://static.vecteezy.com/system/resources/previews/036/280/651/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg" alt="Robert Williams">
+                            </div>
+                            <h4>Sam Mangyao</h4>
+                            <p>JS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page">
+            <div class="container">
+                <div class="page-title">
+                    <h2>Contact Us</h2>
+                    <p>We'd love to hear from you</p>
+                </div>
+                
+                <div class="contact-content">
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contactFirstName">First Name</label>
+                                    <input type="text" id="contactFirstName" class="form-control" placeholder="Enter your first name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactLastName">Last Name</label>
+                                    <input type="text" id="contactLastName" class="form-control" placeholder="Enter your last name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactEmail">Email Address</label>
+                                <input type="email" id="contactEmail" class="form-control" placeholder="Enter your email address" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactSubject">Subject</label>
+                                <select id="contactSubject" class="form-control" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="partnership">Partnership Opportunity</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group form-textarea">
+                                <label for="contactMessage">Message</label>
+                                <textarea id="contactMessage" class="form-control" placeholder="How can we help you?" rows="6" required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="contactNewsletter" checked>
+                                    Subscribe to our newsletter for community updates
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-block submit-btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo" style="color: white;">Team<span>bangan</span></div>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/cjdavidi" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.facebook.com/kennethbryan.peras.5" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.facebook.com/cjdavidi" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 Teambangan. Building stronger communities, one person at a time.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create a New Post</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="postForm">
+                <div class="form-group">
+                    <label for="postTitle">Title</label>
+                    <input type="text" id="postTitle" class="form-control" placeholder="What do you need or want to offer?" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postType">Type</label>
+                    <select id="postType" class="form-control" required>
+                        <option value="help">I need help</option>
+                        <option value="offer">I can offer help</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postEmail">Your Gmail Address</label>
+                    <input type="email" id="postEmail" class="form-control" placeholder="yourname@gmail.com" required>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        <strong>Important:</strong> Use your real Gmail so people can contact you
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="postLocation">Location (Optional)</label>
+                    <input type="text" id="postLocation" class="form-control" placeholder="e.g., Downtown, near Central Park, etc.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="postDescription">Description</label>
+                    <textarea id="postDescription" class="form-control" placeholder="Describe what you need or what you can offer..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-block">Post to Community</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="User.js"></script>
+</body>
+</html>
