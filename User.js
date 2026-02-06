@@ -1,7 +1,7 @@
 let currentUser = JSON.parse(localStorage.getItem('teambangan_user')) || null;
 let posts = JSON.parse(localStorage.getItem('teambangan_posts')) || [];
+let users = JSON.parse(localStorage.getItem('teambangan_users')) || [];
 let currentFilter = 'all';
-
 
 const navLinks = document.getElementById('navLinks');
 const mobileToggle = document.getElementById('mobileToggle');
@@ -11,19 +11,27 @@ const postsContainer = document.getElementById('postsContainer');
 const postModal = document.getElementById('postModal');
 const loginSection = document.getElementById('loginSection');
 const signupSection = document.getElementById('signupSection');
-
+const showSignupLink = document.getElementById('showSignupLink');
+const showLoginLink = document.getElementById('showLoginLink');
 
 window.addEventListener('DOMContentLoaded', () => {
     updateNavLinks();
     renderPosts();
     
- 
-    if (currentUser) {
-        loginSection.style.display = 'none';
-        signupSection.style.display = 'none';
+    if (showSignupLink) {
+        showSignupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSignupSection();
+        });
+    }
+    
+    if (showLoginLink) {
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoginSection();
+        });
     }
 });
-
 
 mobileToggle.addEventListener('click', () => {
     navLinks.classList.toggle('active');
@@ -31,7 +39,6 @@ mobileToggle.addEventListener('click', () => {
         ? '<i class="fas fa-times"></i>'
         : '<i class="fas fa-bars"></i>';
 });
-
 
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
@@ -41,7 +48,6 @@ function scrollToSection(sectionId) {
         mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
     }
 }
-
 
 function updateNavLinks() {
     if (currentUser) {
@@ -55,7 +61,6 @@ function updateNavLinks() {
     }
 }
 
-
 loginLink.addEventListener('click', (e) => {
     e.preventDefault();
     scrollToSection('loginSection');
@@ -63,20 +68,17 @@ loginLink.addEventListener('click', (e) => {
     signupSection.style.display = 'none';
 });
 
-
 function showSignupSection() {
     signupSection.style.display = 'block';
     loginSection.style.display = 'none';
     scrollToSection('signupSection');
 }
 
-
 function showLoginSection() {
     loginSection.style.display = 'block';
     signupSection.style.display = 'none';
     scrollToSection('loginSection');
 }
-
 
 document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -93,10 +95,22 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
         return;
     }
 
+    const user = users.find(u => u.email === email);
+    
+    if (!user) {
+        alert('No account found with this email. Please sign up first.');
+        return;
+    }
+
+    if (user.password !== password) {
+        alert('Incorrect password. Please try again.');
+        return;
+    }
+
     currentUser = {
-        name: email.split('@')[0].replace('.', ' '),
-        email: email,
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(email)}`
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar
     };
 
     localStorage.setItem('teambangan_user', JSON.stringify(currentUser));
@@ -109,14 +123,14 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
     scrollToSection('Cboard');
 });
 
-
 document.getElementById('signupForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
         alert('Please fill in all fields');
         return;
     }
@@ -131,13 +145,35 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
         return;
     }
 
-    currentUser = {
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser) {
+        alert('An account with this email already exists. Please login instead.');
+        showLoginSection();
+        return;
+    }
+
+    const newUser = {
         name: name,
         email: email,
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(email)}`
+        password: password,
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(email)}`,
+        dateJoined: new Date().toISOString()
     };
 
-   
+    users.push(newUser);
+    localStorage.setItem('teambangan_users', JSON.stringify(users));
+
+    currentUser = {
+        name: newUser.name,
+        email: newUser.email,
+        avatar: newUser.avatar
+    };
+
     localStorage.setItem('teambangan_user', JSON.stringify(currentUser));
 
     updateNavLinks();
@@ -148,7 +184,6 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
     scrollToSection('Cboard');
 });
 
-
 logoutLink.addEventListener('click', (e) => {
     e.preventDefault();
     currentUser = null;
@@ -157,7 +192,6 @@ logoutLink.addEventListener('click', (e) => {
     alert('Logged out successfully');
     scrollToSection('home');
 });
-
 
 document.getElementById('contactForm').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -174,7 +208,6 @@ document.getElementById('contactForm').addEventListener('submit', (e) => {
         return;
     }
 
-   
     const formData = {
         firstName: firstName,
         lastName: lastName,
@@ -191,7 +224,6 @@ document.getElementById('contactForm').addEventListener('submit', (e) => {
 
     alert(`Thank you ${firstName} for your message! We'll get back to you at ${email} soon.`);
     
-   
     document.getElementById('contactForm').reset();
     document.getElementById('contactNewsletter').checked = true;
     
@@ -206,18 +238,15 @@ document.getElementById('addPostBtn').addEventListener('click', () => {
         return;
     }
     
-   
     document.getElementById('postEmail').value = currentUser.email;
     postModal.classList.add('active');
 });
-
 
 document.querySelector('.close-modal').addEventListener('click', () => {
     postModal.classList.remove('active');
     document.getElementById('postForm').reset();
 });
 
-// Post Form Submission
 document.getElementById('postForm').addEventListener('submit', (e) => {
     e.preventDefault();
     
@@ -262,7 +291,6 @@ document.getElementById('postForm').addEventListener('submit', (e) => {
 
     posts.unshift(newPost);
     
-   
     localStorage.setItem('teambangan_posts', JSON.stringify(posts));
     
     renderPosts();
@@ -272,7 +300,6 @@ document.getElementById('postForm').addEventListener('submit', (e) => {
     alert('Your post has been added to the community board!');
 });
 
-
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -281,7 +308,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         renderPosts();
     });
 });
-
 
 function renderPosts() {
     postsContainer.innerHTML = '';
@@ -339,14 +365,12 @@ function renderPosts() {
     });
 }
 
-
 postModal.addEventListener('click', (e) => {
     if (e.target === postModal) {
         postModal.classList.remove('active');
         document.getElementById('postForm').reset();
     }
 });
-
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && postModal.classList.contains('active')) {
