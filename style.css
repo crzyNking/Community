@@ -103,6 +103,17 @@ nav {
     transform: translateY(-2px);
 }
 
+/* Logout specific hover styles */
+#logoutLink:hover {
+    color: #dc3545 !important;
+    background: rgba(220, 53, 69, 0.1) !important;
+}
+
+#logoutLink:hover::after {
+    background: #dc3545 !important;
+    width: 80%;
+}
+
 .nav-links a::after {
     content: '';
     position: absolute;
